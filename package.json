@@ -9,7 +9,8 @@
     "test": "node --test",
     "build": "node scripts/build-worker.mjs",
     "performance": "node scripts/performance.mjs",
-    "pretest": "npm run build"
+    "pretest": "npm run build",
+    "setup:turso": "node scripts/setup-turso.mjs"
   },
   "repository": {
     "type": "git",
@@ -19,13 +20,14 @@
   "author": "Syed Anwar Shazeb",
   "license": "ISC",
   "dependencies": {
+    "@libsql/client": "^0.18.0",
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.3",
     "helmet": "^8.3.0"
   },
   "type": "module",
   "engines": {
-    "node": ">=22.13.0"
+    "node": "22.x"
   },
   "devDependencies": {
     "axe-core": "^4.14.0",
