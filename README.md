@@ -2,6 +2,10 @@
 
 Full-stack internship portal capstone by **Syed Anwar Shazeb (Devop785)**. Integrates the responsive board, persistent REST API and secure application journey.
 
+## Preferred deployment: Render
+
+Follow [the Render deployment guide](docs/RENDER.md). The included render.yaml runs the Node backend with persistent SQLite storage. A paid Render web service and disk are required. The older private Sites URL below is not the preferred submission deployment; replace it with the verified Render URL after deployment.
+
 ## Submission links
 - [Live deployment](https://skillorbit-capstone-devop785.tankereees.chatgpt.site) — deployed successfully; owner-private and requires ChatGPT sign-in. Enable assessor sharing before submission.
 - [Walkthrough video — 50 seconds](docs/walkthrough.mp4): captioned actual-interface captures and engineering decisions; no narration.

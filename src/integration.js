@@ -5,7 +5,7 @@ import {rateLimit} from 'express-rate-limit';
 import {fileURLToPath} from 'node:url';
 import {createApp as createRecordsApi} from './app.js';
 const error=(res,status,code,message,details=[])=>res.status(status).json({error:{code,message,details}});
-export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,origin=process.env.PUBLIC_ORIGIN||`http://127.0.0.1:${process.env.PORT||3003}`}={}) {
+export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,origin=process.env.PUBLIC_ORIGIN||process.env.RENDER_EXTERNAL_URL||`http://127.0.0.1:${process.env.PORT||3003}`}={}) {
  const app=express();app.disable('x-powered-by');
  app.use((req,res,next)=>{const started=performance.now();const id=randomUUID();res.set('X-Request-Id',id);res.on('finish',()=>console.log(JSON.stringify({event:'request',requestId:id,method:req.method,path:req.path,status:res.statusCode,durationMs:Math.round(performance.now()-started)})));next();});
  app.get('/health/live',(_req,res)=>res.json({data:{status:'ok'}}));

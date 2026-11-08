@@ -1,0 +1,22 @@
+# A paid service and disk are required for durable SQLite storage.
+services:
+  - type: web
+    name: skillorbit-capstone
+    runtime: node
+    plan: starter
+    buildCommand: npm ci --omit=dev
+    startCommand: npm run seed && npm start
+    healthCheckPath: /health/ready
+    envVars:
+      - key: NODE_VERSION
+        value: 22.20.0
+      - key: NODE_ENV
+        value: production
+      - key: HOST
+        value: 0.0.0.0
+      - key: DB_PATH
+        value: /var/data/internships.sqlite
+    disk:
+      name: internship-data
+      mountPath: /var/data
+      sizeGB: 1
