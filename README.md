@@ -2,9 +2,9 @@
 
 Full-stack internship portal capstone by **Syed Anwar Shazeb (Devop785)**. Integrates the responsive board, persistent REST API and secure application journey.
 
-## Preferred deployment: Vercel + Turso
+## Preferred deployment: Render
 
-Follow [the Vercel deployment guide](docs/VERCEL.md). Use Vercel Hobby for the non-commercial demo and Turso's free database plan. The checked-in vercel.json configures the static frontend, Node API and initial database setup. Set TURSO_DATABASE_URL and TURSO_AUTH_TOKEN in Vercel before deploying. Local SQLite remains available for development; hosted applications use durable Turso storage.
+Follow [the Render deployment guide](docs/RENDER.md). The included render.yaml runs the Node backend with persistent SQLite storage. A paid Render web service and disk are required. The older private Sites URL below is not the preferred submission deployment; replace it with the verified Render URL after deployment.
 
 ## Submission links
 - [Live deployment](https://skillorbit-capstone-devop785.tankereees.chatgpt.site) — deployed successfully; owner-private and requires ChatGPT sign-in. Enable assessor sharing before submission.

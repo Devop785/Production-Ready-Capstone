@@ -9,7 +9,7 @@ export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,ori
  const app=express();app.disable('x-powered-by');
  app.use((req,res,next)=>{const started=performance.now();const id=randomUUID();res.set('X-Request-Id',id);res.on('finish',()=>console.log(JSON.stringify({event:'request',requestId:id,method:req.method,path:req.path,status:res.statusCode,durationMs:Math.round(performance.now()-started)})));next();});
  app.get('/health/live',(_req,res)=>res.json({data:{status:'ok'}}));
- app.get('/health/ready',async (_req,res)=>{try{await db.prepare('SELECT count(*) FROM internships').get();res.json({data:{status:'ready'}});}catch{res.status(503).json({error:{code:'NOT_READY',message:'Database unavailable'}});}});
+ app.get('/health/ready',(_req,res)=>{try{db.prepare('SELECT count(*) FROM internships').get();res.json({data:{status:'ready'}});}catch{res.status(503).json({error:{code:'NOT_READY',message:'Database unavailable'}});}});
  app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'"],imgSrc:["'self'"],connectSrc:["'self'"],formAction:["'self'"],frameAncestors:["'none'"],upgradeInsecureRequests:null}},strictTransportSecurity:false}));
  app.use('/api',(_req,res,next)=>{res.set('Cache-Control','no-store');next();});
  const limiter=limit=>rateLimit({windowMs,limit,standardHeaders:'draft-8',legacyHeaders:false,handler:(_req,res)=>error(res,429,'RATE_LIMITED','Too many requests. Wait before retrying.')});
@@ -23,7 +23,7 @@ export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,ori
   if(!req.is('application/json'))return error(res,415,'UNSUPPORTED_MEDIA_TYPE','Use application/json.');next();
  });
  app.use(express.json({limit:'16kb'}));
- app.post('/api/applications',async (req,res)=>{
+ app.post('/api/applications',(req,res)=>{
   const body=req.body,details=[];
   if(!body||typeof body!=='object'||Array.isArray(body))return error(res,400,'VALIDATION_ERROR','A JSON object is required.');
   for(const key of Object.keys(body))if(!['internshipId','fullName','email','coverLetter','consent'].includes(key))details.push(`${key}: unknown field`);
@@ -36,9 +36,9 @@ export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,ori
   if(letter.length<30||letter.length>3000)details.push('coverLetter: 30–3000 characters required');
   if(body.consent!==true)details.push('consent: explicit agreement required');
   if(details.length)return error(res,400,'VALIDATION_ERROR','Please correct your application.',details);
-  if(!await db.prepare('SELECT id FROM internships WHERE id=?').get(body.internshipId))return error(res,404,'NOT_FOUND','This internship is no longer available.');
+  if(!db.prepare('SELECT id FROM internships WHERE id=?').get(body.internshipId))return error(res,404,'NOT_FOUND','This internship is no longer available.');
   // An atomic uniqueness constraint makes uncertain network retries safe.
-  const result=await db.prepare('INSERT INTO applications (internshipId,fullName,email,coverLetter,consent) VALUES (?,?,?,?,1) ON CONFLICT(internshipId,email) DO NOTHING').run(body.internshipId,name,email,letter);
+  const result=db.prepare('INSERT INTO applications (internshipId,fullName,email,coverLetter,consent) VALUES (?,?,?,?,1) ON CONFLICT(internshipId,email) DO NOTHING').run(body.internshipId,name,email,letter);
   if(!result.changes)return error(res,409,'ALREADY_SUBMITTED','An application for this email and role has already been received.');
   res.status(201).json({data:{id:Number(result.lastInsertRowid),status:'received'}});
  });

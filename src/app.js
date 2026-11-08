@@ -23,8 +23,8 @@ function validate(body,partial=false) {
 export function createApp(db) {
  const app=express();app.disable('x-powered-by');
  app.use(express.json({limit:'32kb'}));
- app.get('/health',async (_req,res)=>{await db.prepare('SELECT 1').get();res.json({data:{status:'ok'}});});
- app.get('/api/internships',async (req,res)=>{
+ app.get('/health',(_req,res)=>{db.prepare('SELECT 1').get();res.json({data:{status:'ok'}});});
+ app.get('/api/internships',(req,res)=>{
   const allowed=['page','limit','domain','q'];
   if(Object.keys(req.query).some(k=>!allowed.includes(k))) throw fail(400,'VALIDATION_ERROR','Unknown query parameter.');
   function number(key,fallback,max){const v=req.query[key];if(v===undefined)return fallback;if(typeof v!=='string'||!/^\d+$/.test(v)||!Number.isSafeInteger(Number(v))||Number(v)<1||Number(v)>max)throw fail(400,'VALIDATION_ERROR',`Invalid ${key}.`);return Number(v);}
@@ -34,29 +34,29 @@ export function createApp(db) {
   if(req.query.domain){conditions.push('domain = ? COLLATE NOCASE');params.push(req.query.domain.trim());}
   if(req.query.q){conditions.push("instr(lower(company || ' ' || role || ' ' || description), lower(?)) > 0");params.push(req.query.q.trim());}
   const where=conditions.length?' WHERE '+conditions.join(' AND '):'';
-  const total=(await db.prepare('SELECT count(*) AS total FROM internships'+where).get(...params)).total;
-  const data=await db.prepare('SELECT * FROM internships'+where+' ORDER BY id ASC LIMIT ? OFFSET ?').all(...params,limit,(page-1)*limit);
+  const total=db.prepare('SELECT count(*) AS total FROM internships'+where).get(...params).total;
+  const data=db.prepare('SELECT * FROM internships'+where+' ORDER BY id ASC LIMIT ? OFFSET ?').all(...params,limit,(page-1)*limit);
   res.json({data,meta:{page,limit,total,totalPages:Math.ceil(total/limit)}});
  });
- app.param('id',async (req,_res,next,value)=>{
+ app.param('id',(req,_res,next,value)=>{
   if(!/^[1-9]\d*$/.test(value)||!Number.isSafeInteger(Number(value))) return next(fail(400,'VALIDATION_ERROR','ID must be a positive integer.'));
-  req.record=await db.prepare('SELECT * FROM internships WHERE id=?').get(Number(value));
+  req.record=db.prepare('SELECT * FROM internships WHERE id=?').get(Number(value));
   if(!req.record)return next(fail(404,'NOT_FOUND','Internship not found.'));next();
  });
  app.get('/api/internships/:id',(req,res)=>res.json({data:req.record}));
  function jsonOnly(req){if(!req.is('application/json'))throw fail(415,'UNSUPPORTED_MEDIA_TYPE','Use Content-Type: application/json.');}
- app.post('/api/internships',async (req,res)=>{
+ app.post('/api/internships',(req,res)=>{
   jsonOnly(req);const data=validate(req.body);
-  const result=await db.prepare(`INSERT INTO internships (${fields.join(',')}) VALUES (${fields.map(()=>'?').join(',')})`).run(...fields.map(k=>data[k]));
-  const record=await db.prepare('SELECT * FROM internships WHERE id=?').get(Number(result.lastInsertRowid));
+  const result=db.prepare(`INSERT INTO internships (${fields.join(',')}) VALUES (${fields.map(()=>'?').join(',')})`).run(...fields.map(k=>data[k]));
+  const record=db.prepare('SELECT * FROM internships WHERE id=?').get(Number(result.lastInsertRowid));
   res.location(`/api/internships/${record.id}`).status(201).json({data:record});
  });
- for(const method of ['put','patch']) app[method]('/api/internships/:id',async (req,res)=>{
+ for(const method of ['put','patch']) app[method]('/api/internships/:id',(req,res)=>{
   jsonOnly(req);const data=validate(req.body,method==='patch'),keys=Object.keys(data);
-  await db.prepare(`UPDATE internships SET ${keys.map(k=>k+'=?').join(',')}, updatedAt=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?`).run(...keys.map(k=>data[k]),req.record.id);
-  res.json({data:await db.prepare('SELECT * FROM internships WHERE id=?').get(req.record.id)});
+  db.prepare(`UPDATE internships SET ${keys.map(k=>k+'=?').join(',')}, updatedAt=strftime('%Y-%m-%dT%H:%M:%fZ','now') WHERE id=?`).run(...keys.map(k=>data[k]),req.record.id);
+  res.json({data:db.prepare('SELECT * FROM internships WHERE id=?').get(req.record.id)});
  });
- app.delete('/api/internships/:id',async (req,res)=>{await db.prepare('DELETE FROM internships WHERE id=?').run(req.record.id);res.status(204).end();});
+ app.delete('/api/internships/:id',(req,res)=>{db.prepare('DELETE FROM internships WHERE id=?').run(req.record.id);res.status(204).end();});
  app.use((_req,_res,next)=>next(fail(404,'NOT_FOUND','Route not found.')));
  app.use((err,_req,res,_next)=>{
   if(err.type==='entity.parse.failed')err=fail(400,'INVALID_JSON','Request body is not valid JSON.');
