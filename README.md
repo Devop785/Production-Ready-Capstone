@@ -13,7 +13,7 @@ Follow [the Vercel deployment guide](docs/VERCEL.md). Use Vercel Hobby for the n
 The older private Sites URL below is not the preferred submission deployment; replace it with the verified deployment URL.
 
 ## Submission links
-- [Live deployment](https://skillorbit-capstone-devop785.tankereees.chatgpt.site) — deployed successfully; owner-private and requires ChatGPT sign-in. Enable assessor sharing before submission.
+- [Live deployment](https://production-ready-capstone.vercel.app) — public, no sign-in required. Vercel Hobby with a Turso database; submitted applications persist across redeploys.
 - [Walkthrough video — 50 seconds](docs/walkthrough.mp4): captioned actual-interface captures and engineering decisions; no narration.
 - [QA report](docs/QA.md), [security checklist](docs/SECURITY.md), [operations guide](docs/OPERATIONS.md).
 
