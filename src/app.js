@@ -26,7 +26,8 @@ export function createApp(db) {
  app.get('/health',async (_req,res)=>{await db.prepare('SELECT 1').get();res.json({data:{status:'ok'}});});
  app.get('/api/internships',async (req,res)=>{
   const allowed=['page','limit','domain','q'];
-  if(Object.keys(req.query).some(k=>!allowed.includes(k))) throw fail(400,'VALIDATION_ERROR','Unknown query parameter.');
+  const unexpected=Object.keys(req.query).filter(k=>!allowed.includes(k));
+  if(unexpected.length) throw fail(400,'VALIDATION_ERROR','Unknown query parameter.',unexpected.map(k=>`${k}: unknown query parameter`));
   function number(key,fallback,max){const v=req.query[key];if(v===undefined)return fallback;if(typeof v!=='string'||!/^\d+$/.test(v)||!Number.isSafeInteger(Number(v))||Number(v)<1||Number(v)>max)throw fail(400,'VALIDATION_ERROR',`Invalid ${key}.`);return Number(v);}
   const page=number('page',1,1000000),limit=number('limit',10,100);
   const conditions=[],params=[];

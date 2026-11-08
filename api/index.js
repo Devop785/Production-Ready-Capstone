@@ -1,19 +1,18 @@
 import {createApp} from '../src/integration.js';
 import {openTurso} from '../src/turso.js';
 
-// Vercel's rewrites capture a :path segment that the /api/index destination does
-// not consume, so it arrives as an injected query parameter and the records API's
-// strict allowlist rejects the request. Drop it only when it matches the captured
-// route segments, so a genuinely unexpected ?path= is still refused.
+// Vercel appends any rewrite capture its destination does not consume to the
+// query string, which the records API's strict allowlist then refuses. The
+// rewrites in vercel.json name that capture __rewritepath so this handler can
+// drop exactly one known key instead of guessing the platform's naming.
+const REWRITE_CAPTURE='__rewritepath';
+
 export function normalizeRewriteQuery(url) {
  const [pathname,search]=url.split('?');
  if(!search)return url;
  const params=new URLSearchParams(search);
- if(!params.has('path'))return url;
- const captured=params.getAll('path').join('/');
- const expected=pathname.replace(/^\/(?:api|health)\/?/,'');
- if(captured!==expected)return url;
- params.delete('path');
+ if(!params.has(REWRITE_CAPTURE))return url;
+ params.delete(REWRITE_CAPTURE);
  const rest=params.toString();
  return rest?`${pathname}?${rest}`:pathname;
 }
