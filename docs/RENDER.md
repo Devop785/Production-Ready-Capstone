@@ -32,7 +32,7 @@ This is a paid service plus a paid disk; confirm the displayed charges in the da
 
 ## Notes
 
-The current conservative limiter does not trust forwarded IP headers, so users behind Render's proxy can share a bucket; validate the proxy chain before enabling per-client trust, and use a shared limiter for scale.
+On Render the limiter still does not trust forwarded IP headers, so users behind Render's proxy share a bucket. Pass trustProxy to createApp (or set it from an environment check, as the Vercel path does) once you have confirmed how many proxy hops Render puts in front of the service; a wrong hop count lets clients spoof an address and evade the limit. Use a shared store rather than the in-memory one for scale.
 
 The previous private Sites deployment is separate and is not automatically removed by deploying to Render. Update README submission links to the verified Render URL after deployment.
 

@@ -1,18 +1,27 @@
 import express from 'express';
 import {randomUUID} from 'node:crypto';
 import helmet from 'helmet';
-import {rateLimit} from 'express-rate-limit';
+import {rateLimit,ipKeyGenerator} from 'express-rate-limit';
 import {fileURLToPath} from 'node:url';
 import {createApp as createRecordsApi} from './app.js';
 const error=(res,status,code,message,details=[])=>res.status(status).json({error:{code,message,details}});
-export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,origin=process.env.PUBLIC_ORIGIN||process.env.RENDER_EXTERNAL_URL||`http://127.0.0.1:${process.env.PORT||3003}`}={}) {
+export function createApp(db,{apiLimit=120,applicationLimit=5,windowMs=60000,trustProxy=process.env.VERCEL?1:false,origin=process.env.PUBLIC_ORIGIN||process.env.RENDER_EXTERNAL_URL||`http://127.0.0.1:${process.env.PORT||3003}`}={}) {
  const app=express();app.disable('x-powered-by');
+ // Vercel terminates TLS exactly one hop in front of the function, so the first
+ // X-Forwarded-For entry is the real client and the limiter can key on it. Any
+ // other host keeps the conservative default of not trusting forwarded headers,
+ // because a wrong hop count lets clients spoof an address and evade the limit.
+ if(trustProxy!==false)app.set('trust proxy',trustProxy);
  app.use((req,res,next)=>{const started=performance.now();const id=randomUUID();res.set('X-Request-Id',id);res.on('finish',()=>console.log(JSON.stringify({event:'request',requestId:id,method:req.method,path:req.path,status:res.statusCode,durationMs:Math.round(performance.now()-started)})));next();});
  app.get('/health/live',(_req,res)=>res.json({data:{status:'ok'}}));
  app.get('/health/ready',async (_req,res)=>{try{await db.prepare('SELECT count(*) FROM internships').get();res.json({data:{status:'ready'}});}catch{res.status(503).json({error:{code:'NOT_READY',message:'Database unavailable'}});}});
  app.use(helmet({contentSecurityPolicy:{directives:{defaultSrc:["'self'"],scriptSrc:["'self'"],styleSrc:["'self'"],imgSrc:["'self'"],connectSrc:["'self'"],formAction:["'self'"],frameAncestors:["'none'"],upgradeInsecureRequests:null}},strictTransportSecurity:false}));
  app.use('/api',(_req,res,next)=>{res.set('Cache-Control','no-store');next();});
- const limiter=limit=>rateLimit({windowMs,limit,standardHeaders:'draft-8',legacyHeaders:false,handler:(_req,res)=>error(res,429,'RATE_LIMITED','Too many requests. Wait before retrying.')});
+ // Behind a trusted proxy each client gets its own bucket, keyed through
+ // ipKeyGenerator so IPv6 addresses group by subnet. The two header validations
+ // are then satisfied by configuration rather than left to warn on every call.
+ const proxyAware=trustProxy!==false?{keyGenerator:req=>ipKeyGenerator(req.ip||''),validate:{xForwardedForHeader:false,forwardedHeader:false}}:{};
+ const limiter=limit=>rateLimit({windowMs,limit,standardHeaders:'draft-8',legacyHeaders:false,...proxyAware,handler:(_req,res)=>error(res,429,'RATE_LIMITED','Too many requests. Wait before retrying.')});
  app.use('/api',limiter(apiLimit));
  app.use('/api/applications',limiter(applicationLimit));
  app.use('/api', (req,res,next)=>{

@@ -23,7 +23,7 @@ If application submission returns 403, set PUBLIC_ORIGIN to the exact HTTPS URL 
 - Build says database configuration missing: add both Turso variables to the target environment and redeploy.
 - Authentication/database connection fails: verify the libSQL URL and regenerate a database-scoped token.
 - No functions found: retain the api/index.js file and the committed vercel.json; use framework Other.
-- 429: wait for the limit to reset. The demo's in-memory limiter is per-instance and conservatively groups proxy traffic. It is not a global distributed protection system.
+- 429: wait for the limit to reset. On Vercel the app trusts exactly one proxy hop, so the limiter keys each client by its own address rather than grouping all traffic together. The store is still in memory and therefore per-instance, so the effective limit scales with the number of warm functions. It is not a global distributed protection system.
 
 ## Limits
 The free services have usage limits. Vercel Hobby is for personal non-commercial projects. No paid upgrade is needed for this setup within those limits. Authentication, verified applicant email and a shared rate limiter remain requirements for real recruiting use. The schema initializer supports this initial schema, not arbitrary future migrations.
