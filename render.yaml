@@ -1,9 +1,11 @@
-# A paid service and disk are required for durable SQLite storage.
+# Free plan: SQLite lives on the ephemeral filesystem and resets on each
+# deploy and on sleep/wake. Switch to plan: starter and reattach a disk at
+# /var/data (with DB_PATH=/var/data/internships.sqlite) for durable storage.
 services:
   - type: web
     name: skillorbit-capstone
     runtime: node
-    plan: starter
+    plan: free
     buildCommand: npm ci --omit=dev
     startCommand: npm run seed && npm start
     healthCheckPath: /health/ready
@@ -15,8 +17,4 @@ services:
       - key: HOST
         value: 0.0.0.0
       - key: DB_PATH
-        value: /var/data/internships.sqlite
-    disk:
-      name: internship-data
-      mountPath: /var/data
-      sizeGB: 1
+        value: data/internships.sqlite
