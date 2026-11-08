@@ -3,7 +3,7 @@
 Full-stack internship portal capstone by **Syed Anwar Shazeb (Devop785)**. Integrates the responsive board, persistent REST API and secure application journey.
 
 ## Submission links
-- Live deployment: pending verification (updated after successful publication).
+- [Live deployment](https://skillorbit-capstone-devop785.tankereees.chatgpt.site) — deployed successfully; owner-private and requires ChatGPT sign-in. Enable assessor sharing before submission.
 - [Walkthrough video — 50 seconds](docs/walkthrough.mp4): captioned actual-interface captures and engineering decisions; no narration.
 - [QA report](docs/QA.md), [security checklist](docs/SECURITY.md), [operations guide](docs/OPERATIONS.md).
 
