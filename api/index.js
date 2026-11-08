@@ -17,6 +17,18 @@ export function normalizeRewriteQuery(url) {
  return rest?`${pathname}?${rest}`:pathname;
 }
 
+// Vercel's Node runtime also attaches its own parsed `query` object to the
+// request. That own property shadows Express's prototype getter, so clearing the
+// query string off req.url is not enough on its own.
+export function stripRewriteCapture(req) {
+ req.url=normalizeRewriteQuery(req.url);
+ const query=req.query;
+ if(query&&typeof query==='object'&&REWRITE_CAPTURE in query){
+  try{delete query[REWRITE_CAPTURE];}catch{}
+ }
+ return req;
+}
+
 let app;
 export default function handler(req,res){
  try {
@@ -24,7 +36,7 @@ export default function handler(req,res){
    const origin=process.env.PUBLIC_ORIGIN || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined);
    app=createApp(openTurso(),{origin});
   }
-  req.url=normalizeRewriteQuery(req.url);
+  stripRewriteCapture(req);
   return app(req,res);
  }catch{
   res.status(503).json({error:{code:'NOT_CONFIGURED',message:'Database configuration is incomplete.',details:[]}});
