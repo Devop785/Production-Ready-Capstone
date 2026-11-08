@@ -15,115 +15,115 @@ TAP version 13
 # Subtest: static accessibility scan
 ok 1 - static accessibility scan
   ---
-  duration_ms: 377.6911
+  duration_ms: 477.1568
   type: 'test'
   ...
 # Subtest: frontend loading, failure, retry, safe rendering and empty results
 ok 2 - frontend loading, failure, retry, safe rendering and empty results
   ---
-  duration_ms: 156.5674
+  duration_ms: 198.9123
   type: 'test'
   ...
 # Subtest: frontend form validation, failed submission preserves values, retry succeeds
 ok 3 - frontend form validation, failed submission preserves values, retry succeeds
   ---
-  duration_ms: 60.8871
+  duration_ms: 73.8106
   type: 'test'
   ...
-# (node:18856) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# (node:14256) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
-# {"event":"request","requestId":"da494d20-44f5-4989-8009-7130acd56041","method":"GET","path":"/","status":200,"durationMs":14}
-# {"event":"request","requestId":"d3c56057-085f-451b-9bae-fdad0fae52cd","method":"GET","path":"/api/internships","status":200,"durationMs":11}
+# {"event":"request","requestId":"37854d27-522c-42a3-8b7b-09f9f7c8fb3c","method":"GET","path":"/","status":200,"durationMs":27}
+# {"event":"request","requestId":"c1a787a8-2080-48dc-87f6-ec5e87091263","method":"GET","path":"/api/internships","status":200,"durationMs":17}
 # Subtest: integrated API security and application persistence
     # Subtest: frontend, data and secure headers
     ok 1 - frontend, data and secure headers
       ---
-      duration_ms: 105.136
+      duration_ms: 131.8466
       type: 'test'
       ...
-# {"event":"request","requestId":"6ad6f34c-d660-4113-a054-f579227ff005","method":"POST","path":"/api/applications","status":400,"durationMs":35}
-# {"event":"request","requestId":"edcbc7b8-76df-4560-855f-49658137d68c","method":"POST","path":"/api/applications","status":400,"durationMs":3}
-# {"event":"request","requestId":"f40b5e49-c6e2-4d8f-b311-b1a47d097c36","method":"POST","path":"/api/applications","status":400,"durationMs":2}
-# {"event":"request","requestId":"22b65e1f-541e-4be2-ac49-01e77220076b","method":"POST","path":"/api/applications","status":400,"durationMs":3}
-# {"event":"request","requestId":"3a6ec80d-7d91-4657-8977-d99e6a5ddf29","method":"POST","path":"/api/applications","status":400,"durationMs":3}
-# {"event":"request","requestId":"5d363cfd-40b8-4a7b-b889-56733c393757","method":"POST","path":"/api/applications","status":400,"durationMs":3}
-# {"event":"request","requestId":"0d7552ee-2430-463c-ad68-b7c32f761e50","method":"POST","path":"/api/applications","status":400,"durationMs":2}
-# {"event":"request","requestId":"bc8c32cc-7263-41a2-96c4-19fcecc79683","method":"POST","path":"/api/applications","status":400,"durationMs":2}
-# {"event":"request","requestId":"06e922ff-7d8e-496f-b2de-8c312549ca8d","method":"POST","path":"/api/applications","status":404,"durationMs":4}
+# {"event":"request","requestId":"2e32c42a-6af2-43b5-b359-b3553987d031","method":"POST","path":"/api/applications","status":400,"durationMs":79}
+# {"event":"request","requestId":"e0b40ee8-46c9-4df8-aed4-d1f7403519fc","method":"POST","path":"/api/applications","status":400,"durationMs":4}
+# {"event":"request","requestId":"2a5508dc-b643-43e7-b899-04892cb4e05a","method":"POST","path":"/api/applications","status":400,"durationMs":2}
+# {"event":"request","requestId":"d57d5d67-93f3-48d1-ac03-5bd5c3f4b1b5","method":"POST","path":"/api/applications","status":400,"durationMs":4}
+# {"event":"request","requestId":"99611e65-1f1e-404e-a2e2-1bb204a8a4f5","method":"POST","path":"/api/applications","status":400,"durationMs":3}
+# {"event":"request","requestId":"ff39ce81-95d1-4e6b-b85a-94af6ae51010","method":"POST","path":"/api/applications","status":400,"durationMs":2}
+# {"event":"request","requestId":"65426eee-5a73-47e9-a154-cb5e2ce917bf","method":"POST","path":"/api/applications","status":400,"durationMs":6}
+# {"event":"request","requestId":"59939b05-8dea-48d6-9a1b-e469ac64a54f","method":"POST","path":"/api/applications","status":400,"durationMs":3}
+# {"event":"request","requestId":"2d16f8ac-3541-47ca-a250-8edfc35cae89","method":"POST","path":"/api/applications","status":404,"durationMs":4}
     # Subtest: client-independent validation
     ok 2 - client-independent validation
       ---
-      duration_ms: 119.5253
+      duration_ms: 180.3427
       type: 'test'
       ...
-# {"event":"request","requestId":"d730ddb3-1b2a-4cad-8515-18e08a8fa0be","method":"POST","path":"/applications","status":403,"durationMs":2}
-# {"event":"request","requestId":"c6b47382-c45e-43bb-aa73-95cd7136b292","method":"POST","path":"/applications","status":403,"durationMs":1}
-# {"event":"request","requestId":"e8e37b3a-9742-4edd-8dae-9e093c050a5e","method":"POST","path":"/applications","status":415,"durationMs":1}
+# {"event":"request","requestId":"6cdb4d43-8052-4a0b-88d5-f6e3190d7a0b","method":"POST","path":"/applications","status":403,"durationMs":3}
+# {"event":"request","requestId":"3e8da7d0-7a1d-4b28-a659-389c4120ddee","method":"POST","path":"/applications","status":403,"durationMs":2}
+# {"event":"request","requestId":"ddfdee8b-22ff-40ab-8f98-8381d8677ad5","method":"POST","path":"/applications","status":415,"durationMs":2}
     # Subtest: cross-origin, content-type and request-header protection
     ok 3 - cross-origin, content-type and request-header protection
       ---
-      duration_ms: 15.5915
+      duration_ms: 27.8841
       type: 'test'
       ...
-# {"event":"request","requestId":"9e881f37-4572-493d-af8d-f310021bffa2","method":"POST","path":"/api/applications","status":400,"durationMs":2}
-# {"event":"request","requestId":"460e20b1-3315-4496-98b3-162d6ef0fb6a","method":"POST","path":"/api/applications","status":413,"durationMs":3}
+# {"event":"request","requestId":"f784573b-a481-42f0-998a-c6375e44ad37","method":"POST","path":"/api/applications","status":400,"durationMs":2}
+# {"event":"request","requestId":"ca70fcee-3b6d-4daf-a30b-1ac1ac01f1d1","method":"POST","path":"/api/applications","status":413,"durationMs":3}
     # Subtest: malformed and oversized bodies
     ok 4 - malformed and oversized bodies
       ---
-      duration_ms: 13.2428
+      duration_ms: 13.2206
       type: 'test'
       ...
-# {"event":"request","requestId":"65a945e7-91d5-4e3a-b3ff-6b7ced9e6986","method":"POST","path":"/api/applications","status":201,"durationMs":3}
-# {"event":"request","requestId":"bfd4d7ad-ed09-4157-819e-f1953054f763","method":"POST","path":"/api/applications","status":409,"durationMs":3}
+# {"event":"request","requestId":"5897028e-92d2-4ad3-87d8-aa097fc827d8","method":"POST","path":"/api/applications","status":201,"durationMs":3}
+# {"event":"request","requestId":"10ad8fb6-4ea1-4f85-8aa9-2315ead201aa","method":"POST","path":"/api/applications","status":409,"durationMs":3}
     # Subtest: success, normalization and duplicate retry
     ok 5 - success, normalization and duplicate retry
       ---
-      duration_ms: 19.6364
+      duration_ms: 24.4023
       type: 'test'
       ...
-# {"event":"request","requestId":"979da3b4-ba8b-409f-9117-dd64b2c43e65","method":"POST","path":"/api/applications","status":201,"durationMs":4}
-# {"event":"request","requestId":"6118cc06-c3f5-482e-beca-6464666cbc6a","method":"GET","path":"/api/applications","status":404,"durationMs":3}
-# {"event":"request","requestId":"f1a9b6bd-cca4-4556-b8c7-bf3deadd6a4d","method":"POST","path":"/internships/1","status":405,"durationMs":1}
-# {"event":"request","requestId":"427e3ca8-b579-4093-9f32-a80d10e91034","method":"PUT","path":"/internships/1","status":405,"durationMs":1}
-# {"event":"request","requestId":"f53e1c4d-9b0d-4dd1-8188-f374cf8186fe","method":"PATCH","path":"/internships/1","status":405,"durationMs":1}
-# {"event":"request","requestId":"db0a6b98-8526-4bed-94f4-5ee7e64b9359","method":"DELETE","path":"/internships/1","status":405,"durationMs":1}
+# {"event":"request","requestId":"ebdf8733-cbdb-4a85-8c4f-5899698a240e","method":"POST","path":"/api/applications","status":201,"durationMs":4}
+# {"event":"request","requestId":"d0c4edee-7416-4574-a822-cd7349c75919","method":"GET","path":"/api/applications","status":404,"durationMs":3}
+# {"event":"request","requestId":"49f60ab0-d31a-48d5-b092-9192b5423929","method":"POST","path":"/internships/1","status":405,"durationMs":1}
+# {"event":"request","requestId":"5c6f3660-877e-4151-b22d-3112427be5b1","method":"PUT","path":"/internships/1","status":405,"durationMs":1}
+# {"event":"request","requestId":"03495897-fffa-408d-a3c3-6ae4798382b3","method":"PATCH","path":"/internships/1","status":405,"durationMs":1}
+# {"event":"request","requestId":"1fe17ef1-114e-4d0b-9e45-fef73027bd60","method":"DELETE","path":"/internships/1","status":405,"durationMs":1}
     # Subtest: parameterized SQL and private data
     ok 6 - parameterized SQL and private data
       ---
-      duration_ms: 22.1515
+      duration_ms: 30.1024
       type: 'test'
       ...
     1..6
 ok 4 - integrated API security and application persistence
   ---
-  duration_ms: 365.457
+  duration_ms: 491.2932
   type: 'test'
   ...
-# {"event":"request","requestId":"8757381f-8226-4325-b345-4f66b91de575","method":"POST","path":"/applications","status":403,"durationMs":2}
-# {"event":"request","requestId":"6c86e4c4-fc0b-4492-822c-238a3131d7c4","method":"POST","path":"/applications","status":403,"durationMs":1}
-# {"event":"request","requestId":"1365fc0d-0778-41a4-8b9e-c0133cc79d0b","method":"POST","path":"/","status":429,"durationMs":1}
+# {"event":"request","requestId":"7ce53dec-4b1a-49b3-938b-b8e56fabb9d9","method":"POST","path":"/applications","status":403,"durationMs":3}
+# {"event":"request","requestId":"acb59c5d-a0c2-440b-b1d1-826d04c55e29","method":"POST","path":"/applications","status":403,"durationMs":3}
+# {"event":"request","requestId":"179cc994-3fc8-4878-b954-a726037c2d9f","method":"POST","path":"/","status":429,"durationMs":3}
 # Subtest: application rate limiting returns 429 and retry information
 ok 5 - application rate limiting returns 429 and retry information
   ---
-  duration_ms: 40.2091
+  duration_ms: 69.0241
   type: 'test'
   ...
-# {"event":"request","requestId":"a9f9dda5-767c-4b87-bd70-04aeace88858","method":"GET","path":"/api/internships","status":200,"durationMs":2}
-# {"event":"request","requestId":"d2a057bf-db00-4d07-bd4f-8e705cfa6db8","method":"GET","path":"/internships","status":429,"durationMs":1}
+# {"event":"request","requestId":"8a566299-f1b5-43b6-8c40-d44e8d868cf1","method":"GET","path":"/api/internships","status":200,"durationMs":4}
+# {"event":"request","requestId":"48c65500-2e42-49e0-90f0-82c6b5f920e2","method":"GET","path":"/internships","status":429,"durationMs":1}
 # Subtest: general API limiter
 ok 6 - general API limiter
   ---
-  duration_ms: 37.0053
+  duration_ms: 44.0782
   type: 'test'
   ...
-# {"event":"request","requestId":"780d259e-8eb4-4443-9985-1c969e177e75","method":"GET","path":"/api/internships","status":200,"durationMs":21}
-# {"event":"request","requestId":"b7480624-9e05-462b-bcc8-027d529fb53f","method":"GET","path":"/api/internships","status":200,"durationMs":4}
-# {"event":"request","requestId":"e93562f8-bc81-4577-aa96-f3dac897041f","method":"GET","path":"/internships","status":429,"durationMs":3}
-# {"event":"request","requestId":"d3b16763-1230-4d0c-88b0-4b4362d287b9","method":"GET","path":"/api/internships","status":200,"durationMs":3}
+# {"event":"request","requestId":"4b2591e6-5d24-4937-bf92-28f80182f21c","method":"GET","path":"/api/internships","status":200,"durationMs":32}
+# {"event":"request","requestId":"06be30b9-371c-461f-ab24-9dbac3ef4f70","method":"GET","path":"/api/internships","status":200,"durationMs":5}
+# {"event":"request","requestId":"e9ff47af-65a4-4d3b-b6a8-8d2527b0a567","method":"GET","path":"/internships","status":429,"durationMs":2}
+# {"event":"request","requestId":"14aaca7f-56fa-4c48-b4a4-1674c7ac05e1","method":"GET","path":"/api/internships","status":200,"durationMs":3}
 # Subtest: behind a trusted proxy each client address gets its own bucket
 ok 7 - behind a trusted proxy each client address gets its own bucket
   ---
-  duration_ms: 149.6548
+  duration_ms: 195.6917
   type: 'test'
   ...
 # ValidationError: The 'X-Forwarded-For' header is set but the Express 'trust proxy' setting is false (default). This could indicate a misconfiguration which would prevent express-rate-limit from accurately identifying users. See https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/ for more information.
@@ -136,50 +136,50 @@ ok 7 - behind a trusted proxy each client address gets its own bucket
 #   code: 'ERR_ERL_UNEXPECTED_X_FORWARDED_FOR',
 #   help: 'https://express-rate-limit.github.io/ERR_ERL_UNEXPECTED_X_FORWARDED_FOR/'
 # }
-# {"event":"request","requestId":"563c85b1-8d32-422d-beaf-31e928da676a","method":"GET","path":"/api/internships","status":200,"durationMs":4}
-# {"event":"request","requestId":"43e58cbb-ef20-4993-90c5-3e653a9e76d7","method":"GET","path":"/api/internships","status":200,"durationMs":3}
-# {"event":"request","requestId":"0cd2fa71-9b98-43eb-839a-db4f156c8e91","method":"GET","path":"/internships","status":429,"durationMs":2}
+# {"event":"request","requestId":"d638c768-40f8-480b-97da-0f56883d0b24","method":"GET","path":"/api/internships","status":200,"durationMs":5}
+# {"event":"request","requestId":"7f548d8e-771f-4e2b-a617-2be92b7ddc7d","method":"GET","path":"/api/internships","status":200,"durationMs":12}
+# {"event":"request","requestId":"ea35310a-dc18-4c70-8348-2886ce4627b0","method":"GET","path":"/internships","status":429,"durationMs":2}
 # Subtest: without a trusted proxy forwarded addresses are ignored
 ok 8 - without a trusted proxy forwarded addresses are ignored
   ---
-  duration_ms: 46.037
+  duration_ms: 68.0261
   type: 'test'
   ...
-# {"event":"request","requestId":"332bf1e6-5d39-474a-a2ef-87e2b08a0870","method":"GET","path":"/api/internships","status":200,"durationMs":18}
-# {"event":"request","requestId":"325e8057-7967-43ae-ab89-c7306a1e1667","method":"GET","path":"/health/ready","status":200,"durationMs":2}
-# {"event":"request","requestId":"ee801e54-e57e-4f7d-9334-02e0bbea0955","method":"POST","path":"/api/applications","status":201,"durationMs":39}
+# {"event":"request","requestId":"18800d73-28a6-4527-8c30-0c2bc7ac5b7d","method":"GET","path":"/api/internships","status":200,"durationMs":28}
+# {"event":"request","requestId":"afa215b8-d19d-42b5-bdf3-373c935a215e","method":"GET","path":"/health/ready","status":200,"durationMs":4}
+# {"event":"request","requestId":"42f8f52e-c786-4b69-8494-37a17ffdaa2e","method":"POST","path":"/api/applications","status":201,"durationMs":54}
 # Subtest: async libSQL adapter: schema, listing, application and persistent reopen
 ok 9 - async libSQL adapter: schema, listing, application and persistent reopen
   ---
-  duration_ms: 8734.1248
+  duration_ms: 8890.9031
   type: 'test'
   ...
 # Subtest: Vercel rewrite capture is stripped before the API parses the query
 ok 10 - Vercel rewrite capture is stripped before the API parses the query
   ---
-  duration_ms: 1.0916
+  duration_ms: 3.6785
   type: 'test'
   ...
 # Subtest: the capture is also removed from a pre-parsed query object
 ok 11 - the capture is also removed from a pre-parsed query object
   ---
-  duration_ms: 1.8272
+  duration_ms: 7.2356
   type: 'test'
   ...
-# {"event":"request","requestId":"59ccf567-370e-4e72-8ac3-d909ce6d46d0","method":"GET","path":"/","status":200,"durationMs":16}
-# {"event":"request","requestId":"a1f1acc7-2036-4a85-9d2e-b470a5074ad2","method":"GET","path":"/health/ready","status":200,"durationMs":2}
-# {"event":"request","requestId":"5c6d2a37-3663-4e35-b5bd-e1eedf07fa34","method":"GET","path":"/api/internships","status":200,"durationMs":3}
-# {"event":"request","requestId":"ab094cdb-f940-416c-81a3-959d2eea3319","method":"GET","path":"/api/internships","status":400,"durationMs":1}
-# {"event":"request","requestId":"c43ea98d-1674-4899-87f9-036aa5e2698c","method":"POST","path":"/api/applications","status":201,"durationMs":3}
-# {"event":"request","requestId":"2e468185-f126-4069-ab07-de3d4631c3ea","method":"POST","path":"/api/applications","status":409,"durationMs":1}
-# {"event":"request","requestId":"ca90d156-b776-426a-ab6d-109d52750a23","method":"POST","path":"/api/applications","status":403,"durationMs":0}
-# {"event":"request","requestId":"d5f4a416-8591-4d19-870f-37d5b279d7cb","method":"GET","path":"/api/applications","status":404,"durationMs":0}
-# (node:12196) ExperimentalWarning: SQLite is an experimental feature and might change at any time
+# {"event":"request","requestId":"139122fb-8a97-4f22-a973-e685f83a9b88","method":"GET","path":"/","status":200,"durationMs":21}
+# {"event":"request","requestId":"60f816be-5038-43d3-a810-f4ad3f4103cb","method":"GET","path":"/health/ready","status":200,"durationMs":2}
+# {"event":"request","requestId":"41bdb3cd-7219-4d07-b5f6-dbc2b1ecaf4d","method":"GET","path":"/api/internships","status":200,"durationMs":5}
+# {"event":"request","requestId":"bd0b6789-cb5d-451a-abb4-702817337598","method":"GET","path":"/api/internships","status":400,"durationMs":1}
+# {"event":"request","requestId":"d1375e80-1259-41d2-a12f-85ee3f43a3a7","method":"POST","path":"/api/applications","status":201,"durationMs":3}
+# {"event":"request","requestId":"18083168-93ab-4fe6-ab0c-afa4ee57d91e","method":"POST","path":"/api/applications","status":409,"durationMs":1}
+# {"event":"request","requestId":"59cc23ca-67f4-477b-af6f-9b7e03c30c1a","method":"POST","path":"/api/applications","status":403,"durationMs":3}
+# {"event":"request","requestId":"fd09e989-5364-447f-b561-ac631844a908","method":"GET","path":"/api/applications","status":404,"durationMs":1}
+# (node:20604) ExperimentalWarning: SQLite is an experimental feature and might change at any time
 # (Use `node --trace-warnings ...` to show where the warning was created)
 # Subtest: hosted Worker contract against SQLite-backed D1 adapter
 ok 12 - hosted Worker contract against SQLite-backed D1 adapter
   ---
-  duration_ms: 92.074
+  duration_ms: 179.8951
   type: 'test'
   ...
 1..12
@@ -190,4 +190,4 @@ ok 12 - hosted Worker contract against SQLite-backed D1 adapter
 # cancelled 0
 # skipped 0
 # todo 0
-# duration_ms 9703.5654
+# duration_ms 10160.824

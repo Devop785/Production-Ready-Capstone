@@ -10,15 +10,15 @@ Follow [the Vercel deployment guide](docs/VERCEL.md). Use Vercel Hobby for the n
 
 [The Render deployment guide](docs/RENDER.md) remains supported. The included render.yaml targets Render's free plan, where SQLite sits on an ephemeral disk and resets when the instance sleeps; that guide also records the change needed for a paid Starter service with a durable disk.
 
-The older private Sites URL below is not the preferred submission deployment; replace it with the verified deployment URL.
-
 ## Submission links
 - [Live deployment](https://production-ready-capstone.vercel.app) — public, no sign-in required. Vercel Hobby with a Turso database; submitted applications persist across redeploys.
+
+  Verified against the deployed URL: paginated listing, search and domain filtering return data; unknown query parameters and out-of-range pagination are rejected with 400; application submission returns 201 and a repeat of the same email and role returns 409; cross-origin and missing-header submissions return 403; applications are not readable; both health endpoints return 200.
 - [Walkthrough video — 50 seconds](docs/walkthrough.mp4): captioned actual-interface captures and engineering decisions; no narration.
 - [QA report](docs/QA.md), [security checklist](docs/SECURITY.md), [operations guide](docs/OPERATIONS.md).
 
 ## Run locally
-Node.js 22.13+ required; tested with 22.20.0.
+Node.js 22 required (package.json pins engines to 22.x for the Vercel runtime); tested with 22.20.0. The API relies on node:sqlite, which needs 22.13 or newer locally.
 
 ```sh
 npm ci
@@ -41,25 +41,28 @@ Browse paginated internships, search by role/company, filter by domain, clear fi
 ## Architecture and decisions
 - Plain HTML/CSS/JavaScript keeps the UI small and avoids a frontend build framework.
 - Local Express API and SQLite preserve the earlier milestones. Public role modifications are blocked; applicants cannot retrieve others' submissions.
+- The same Express app runs unchanged on a hosted libSQL/Turso database and on local node:sqlite, because the handlers await database calls and awaiting a synchronous result is harmless. One code path serves both deployments.
 - Hosted Worker/D1 adapter matches the public list/detail/application contract. Node SQLite remains useful for local development and portable self-hosting.
 - Parameterized queries, strict input validation, bounded JSON and unique/foreign-key constraints protect data integrity.
 - Request IDs, status, route and elapsed time are logged as JSON; submitted names, email addresses, bodies and query strings are not logged.
 - Native dialog, labels, live status messages, keyboard focus and simplified mobile layout support accessibility.
-- Per-process/per-isolate limits are suitable for the demo; a distributed limiter and verified identities are required before real recruitment use.
+- Rate limiting trusts exactly one proxy hop where the platform guarantees it (Vercel), keying each caller by address through ipKeyGenerator so IPv6 clients group by subnet. Elsewhere forwarded headers stay untrusted, because a wrong hop count would let a client spoof an address and buy a fresh allowance. The store is in memory and therefore per instance, so a distributed limiter and verified identities are required before real recruitment use.
 
 ## API contract
-GET /api/internships accepts page (1–1,000,000), limit (1–100), q (up to 120 characters), domain (up to 120 characters). Returns data and meta with page, limit, total and totalPages. GET /api/internships/:id returns one record. GET /health/live checks process availability; GET /health/ready checks database readiness (503 on failure).
+GET /api/internships accepts page (1–1,000,000), limit (1–100), q (up to 120 characters), domain (up to 120 characters). Unknown query parameters are rejected with 400 and named in the error details. Returns data and meta with page, limit, total and totalPages. GET /api/internships/:id returns one record. GET /health/live checks process availability; GET /health/ready checks database readiness (503 on failure).
 
 POST /api/applications requires application/json and X-Application-Request: 1. Fields: internshipId (positive integer), fullName (2–100 trimmed characters), email (valid format, max 254), coverLetter (30–3,000 trimmed characters), consent (true). Unknown fields are rejected. Successful response: 201 with `{data:{id,status:"received"}}`. Errors use `{error:{code,message,details:[]}}` and appropriate 400/403/404/405/409/413/415/429/500 codes. A 409 means the email/role pair already has an application.
 
 ## Source map
 - public/: shared frontend
-- src/: local Node API, integration middleware and database
+- api/: Vercel serverless entrypoint, which normalises the rewrite capture before delegating to the Express app
+- src/: Node API, integration middleware, local SQLite and the Turso adapter
 - worker/: hosted API adapter
 - db/: schema and fictional SQL/JSON seeds
 - drizzle/: hosted schema migration
 - scripts/: deterministic Worker build, performance measurement and walkthrough creation
-- test/: frontend, API, security, accessibility and Worker contract tests
+- test/: frontend, API, security, accessibility, Worker contract, Vercel rewrite and rate-limiter tests
+- vercel.json, render.yaml: deployment manifests for the two supported hosts
 - docs/: actual test output, measured results and walkthrough
 
 ## Scope
