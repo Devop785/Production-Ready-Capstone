@@ -1,0 +1,8 @@
+{
+  "environment": "Local loopback, in-memory SQLite, six sample records; not a public-load benchmark",
+  "requests": 100,
+  "medianMs": 3.802800000000161,
+  "p95Ms": 6.101099999999974,
+  "maxMs": 12.208200000000033,
+  "staticBytes": 27544
+}
